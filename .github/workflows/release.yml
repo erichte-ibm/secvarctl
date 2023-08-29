@@ -1,0 +1,35 @@
+name: Generate Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: install dependencies
+        run: sudo apt-get update && sudo apt-get install -y openssl libssl-dev
+
+      - name: build binary
+        run: make
+
+      - name: run tests
+        run: make SECVAR_TOOL=$(pwd)/bin/secvarctl check
+
+      # - name: build rpm
+      #   run: 
+      
+      - name: generate release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            bin/secvarctl
