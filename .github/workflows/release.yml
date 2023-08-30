@@ -38,30 +38,19 @@ jobs:
           name: ${{ matrix.arch }}
           path: rpms/*
 
-      # - name: install dependencies
-      #   run: sudo apt-get update && sudo apt-get install -y openssl libssl-dev
-
-      # - name: build binary
-      #   run: make
-
-      # - name: run tests
-      #   run: make SECVAR_TOOL=$(pwd)/bin/secvarctl check
-
-      # - name: rename binary
-      #   run: cp bin/secvarctl secvarctl.x86_64
-
-      # - name: build rpm
-      #   run: 
-
   release:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: download rpms
         uses: actions/download-artifact@v3
+
+      - name: copy artifacts
+        run: mkdir -p rpms && cp */*.rpm rpms/
       
       - name: generate release
         uses: softprops/action-gh-release@v1
         with:
+          prerelease: ${{ contains(fromJSON('["rc", "alpha", "beta"]'), github.ref_name) }}
           files: |
-            */*.rpm
+            rpms/*.rpm
