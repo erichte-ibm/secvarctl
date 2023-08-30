@@ -27,10 +27,10 @@ variables.
 %cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/usr"
 
 %build
-%cmake_build .
+%cmake_build
 
 %install
-%cmake_install .
+%cmake_install
 
 %files
 %defattr(-,root,root)
