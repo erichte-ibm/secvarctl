@@ -53,6 +53,6 @@ jobs:
       - name: generate release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: ${{ contains('rc', github.ref_name) }}
+          prerelease: ${{ contains(github.ref_name, 'rc') }}
           files: |
             */*.rpm
