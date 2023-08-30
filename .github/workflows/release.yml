@@ -45,12 +45,9 @@ jobs:
       - name: download rpms
         uses: actions/download-artifact@v3
 
-      - name: copy artifacts
-        run: mkdir -p rpms && cp */*.rpm rpms/
-      
       - name: generate release
         uses: softprops/action-gh-release@v1
         with:
           prerelease: ${{ contains(fromJSON('["rc", "alpha", "beta"]'), github.ref_name) }}
           files: |
-            rpms/*.rpm
+            */*.rpm
