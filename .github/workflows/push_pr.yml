@@ -1,0 +1,14 @@
+name: Build and Test
+
+on:
+  push:
+    tags:
+      - "!v*"
+  pull_request:
+
+jobs:
+  tests:
+    uses: ./.github/workflows/reusable/build_test.yml
+
+  static:
+    uses: ./.github/workflows/reusable/format_static.yml
