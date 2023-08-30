@@ -20,8 +20,8 @@ jobs:
     needs: ["tests", "static"]
     strategy:
       matrix:
-        # arch: ["x86_64", "ppc64le"]
-        arch: ["x86_64"]
+        arch: ["x86_64", "ppc64le"]
+        os: ["el8", "el9", "f37", "f38", "rawhide"]
 
     steps:
       - uses: actions/checkout@v3
@@ -35,10 +35,10 @@ jobs:
           platforms: "${{ matrix.arch }}"
 
       - name: build docker image
-        run: docker build -t ${{ matrix.arch }} --platform linux/${{ matrix.arch }} -f ci/Dockerfile .
+        run: docker build -t ${{ matrix.os }}-${{ matrix.arch }} --platform linux/${{ matrix.arch }} -f ci/Dockerfile.${{ matrix.os }} .
 
       - name: run docker build
-        run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${{ matrix.arch}} bash -c "cd build && ci/build.sh"
+        run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${{ matrix.os }}-${{ matrix.arch}} bash -c "cd build && ci/build.sh"
 
       - name: upload rpms
         uses: actions/upload-artifact@v3

@@ -1,0 +1,3 @@
+FROM almalinux:9
+RUN yum -y install cmake openssl openssl-devel gcc rpm-build
+
