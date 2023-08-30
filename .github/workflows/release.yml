@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         arch: ["x86_64", "ppc64le"]
-        os: ["el8", "el9", "f37", "f38"] #, "rawhide"]
+        os: ["el8", "el9", "f37", "f38", "rawhide"]
 
     steps:
       - uses: actions/checkout@v3
