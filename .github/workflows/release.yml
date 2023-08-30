@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: ["x86_64", "ppc64le"]
+        arch: ["x86_64"] # sick of waiting for the slow build
+        # arch: ["x86_64", "ppc64le"]
 
     steps:
       - uses: actions/checkout@v3
@@ -45,6 +46,10 @@ jobs:
       - name: download rpms
         uses: actions/download-artifact@v3
 
+      - name: test output
+        run: echo "${{ contains(fromJSON('["rc", "alpha", "beta"]'), github.ref_name) }}" && echo "${{ github.ref_name }}"
+
+      
       - name: generate release
         uses: softprops/action-gh-release@v1
         with:
