@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    uses: ./.github/workflows/reusable/build_test.yml
+    uses: ./.github/workflows/build_test.yml
 
   static:
-    uses: ./.github/workflows/reusable/format_static.yml
+    uses: ./.github/workflows/format_static.yml
