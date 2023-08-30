@@ -47,12 +47,12 @@ jobs:
         uses: actions/download-artifact@v3
 
       - name: test output
-        run: echo "${{ contains(fromJSON('["rc", "alpha", "beta"]'), github.ref_name) }}" && echo "${{ github.ref_name }}"
+        run: echo "${{ contains('rc', github.ref_name) }}" && echo "${{ github.ref_name }}"
 
       
       - name: generate release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: ${{ contains(fromJSON('["rc", "alpha", "beta"]'), github.ref_name) }}
+          prerelease: ${{ contains('rc', github.ref_name) }}
           files: |
             */*.rpm
