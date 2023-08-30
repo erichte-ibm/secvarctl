@@ -24,7 +24,7 @@ variables.
 
 %prep
 %setup -q
-cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/usr"
+%cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/usr"
 
 %build
 %cmake_build .
