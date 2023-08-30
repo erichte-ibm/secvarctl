@@ -1,6 +1,7 @@
 name: Format Check and Static Analysis
 
-on: ['push', 'pull_request']
+# on: ['push', 'pull_request']
+on: "workflow_call"
 
 jobs:
   formatcheck:
