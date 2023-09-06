@@ -56,6 +56,10 @@ jobs:
         arch: ["x86_64", "ppc64le"]
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
       - uses: docker/setup-qemu-action@v2
         with:
           platforms: "${{ matrix.arch }}"
