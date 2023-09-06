@@ -2,12 +2,7 @@
 
 VERSION=1.0
 
-
-if [[ $(cat /etc/os-release | grep "^ID=") == *"suse"* ]]; then
-  RPMBUILD_ROOT=/usr/src/packages
-else
-  RPMBUILD_ROOT=/root/rpmbuild
-fi
+RPMBUILD_ROOT=$(rpmbuild -E %_topdir)
 
 set -e
 
