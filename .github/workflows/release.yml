@@ -61,7 +61,7 @@ jobs:
           platforms: "${{ matrix.arch }}"
 
       - name: build docker image
-        run: docker build -t alpine-${{ matrix.arch }} --platform linux/${{ matrix.arch }} -f ci/Dockerfile.${{ matrix.os }} .
+        run: docker build -t alpine-${{ matrix.arch }} --platform linux/${{ matrix.arch }} -f ci/Dockerfile.alpine .
 
       - name: run docker build
         run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build -e ARCH=${{ matrix.arch }} alpine-${{ matrix.arch }} bash -c "cd build && ci/build-static.sh"
