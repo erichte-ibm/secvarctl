@@ -47,7 +47,7 @@ jobs:
         run: docker build -t ${IMAGE_NAME} --platform linux/${{ matrix.arch }} --build-arg="BUILD_IMAGE=${{ matrix.image }}" -f ci/Dockerfile .
 
       - name: run docker build
-        run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${IMAGE_NAME} bash -c "cd build && ci/build.sh"
+        run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${IMAGE_NAME} bash -c "cd build && ci/build-rpm.sh"
 
       - name: upload rpms
         uses: actions/upload-artifact@v3

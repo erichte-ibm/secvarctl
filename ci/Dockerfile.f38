@@ -1,3 +1,0 @@
-FROM fedora:38
-RUN dnf install -y cmake openssl openssl-devel gcc rpm-build
-

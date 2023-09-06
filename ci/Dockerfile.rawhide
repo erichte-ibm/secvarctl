@@ -1,3 +1,0 @@
-FROM fedora:rawhide
-RUN dnf install -y cmake openssl openssl-devel gcc rpm-build
-
