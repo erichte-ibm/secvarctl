@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: ["tests", "static"]
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         arch: ["x86_64", "ppc64le"]
         image:
