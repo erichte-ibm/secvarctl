@@ -19,11 +19,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: ["tests", "static"]
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         arch: ["x86_64", "ppc64le"]
-        os: ["el8", "el9", "f37", "f38", "rawhide"]
-
+        image:
+          - "almalinux:8"
+          - "almalinux:9"
+          - "fedora:37"
+          - "fedora:38"
+          - "fedora:rawhide"
+          - "opensuse/leap:15"
+          - "opensuse/tumbleweed:latest"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -35,11 +41,13 @@ jobs:
         with:
           platforms: "${{ matrix.arch }}"
 
+      - run: echo IMAGE_NAME=$(echo ${{ matrix.image }} | sed "s/:/_/g")-${{ matrix.arch }} >> $GITHUB_ENV
+
       - name: build docker image
-        run: docker build -t ${{ matrix.os }}-${{ matrix.arch }} --platform linux/${{ matrix.arch }} -f ci/Dockerfile.${{ matrix.os }} .
+        run: docker build -t ${IMAGE_NAME} --platform linux/${{ matrix.arch }} --build-arg="BUILD_IMAGE=${{ matrix.image }}" -f ci/Dockerfile .
 
       - name: run docker build
-        run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${{ matrix.os }}-${{ matrix.arch }} bash -c "cd build && ci/build.sh"
+        run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${IMAGE_NAME} bash -c "cd build && ci/build.sh"
 
       - name: upload rpms
         uses: actions/upload-artifact@v3
@@ -51,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: ["tests", "static"]
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         arch: ["x86_64", "ppc64le"]
 
