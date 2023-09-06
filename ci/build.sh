@@ -1,7 +1,13 @@
 #!/bin/bash
 
 VERSION=1.0
-RPMBUILD_ROOT=~/rpmbuild
+
+
+if [[ $(cat /etc/os-relase | grep "^ID=") == *"suse"* ]]; then
+  RPMBUILD_ROOT=/usr/src/packages
+else
+  RPMBUILD_ROOT=/root/rpmbuild
+fi
 
 set -e
 
@@ -9,14 +15,14 @@ set -e
 ln -s . secvarctl-${VERSION}
 tar czf secvarctl-${VERSION}.tar.gz secvarctl-${VERSION}/*
 mkdir -p ${RPMBUILD_ROOT}/SOURCES
-cp secvarctl-${VERSION}.tar.gz /root/rpmbuild/SOURCES
+cp secvarctl-${VERSION}.tar.gz ${RPMBUILD_ROOT}/SOURCES
  
 # Run Build
 if [[ "x86_64" == $(uname -m) ]]; then
   # Only one srpm is needed, so just arbitrarily pick the faster x86_64 build to do it
-  rpmbuild --root ${RPMBUILD_ROOT} -ba secvarctl.spec
+  rpmbuild -ba secvarctl.spec
 else
-  rpmbuild --root ${RPMBUILD_ROOT} -bb secvarctl.spec
+  rpmbuild -bb secvarctl.spec
 fi
 
 # Move generated RPMs out of container
