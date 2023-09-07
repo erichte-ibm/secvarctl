@@ -24,8 +24,30 @@ fi
 mkdir -p rpms
 cp ${RPMBUILD_ROOT}/RPMS/*/*.rpm rpms/
 if [[ "x86_64" == $(uname -m) ]]; then
-  # Only the x86_64 build generates the srpm
+  # Only the x86_64 build generates the srpm, same for all arches
   cp ${RPMBUILD_ROOT}/SRPMS/*.rpm rpms/
 fi
 
-# Note: srpm s the same for all arches, so really only the first to complete needs to be done
+# SUSE rpms don't appear to insert a distro tag, so invent one
+source /etc/os-release
+
+function rename_rpm {
+  cd rpms/
+  for rpm in *.rpm; do
+    # This feels kind of fragile, if this ever breaks it should be updated
+    NEW="$(echo $rpm | cut -d . -f -2).$1.$(echo $rpm | cut -d . -f 3-)"
+    mv $rpm $NEW
+  done
+  cd -
+}
+
+case $ID in
+  opensuse-tumbleweed)
+    rename_rpm stw
+  ;;
+
+  opensuse-leap)
+    rename_rpm "s$(echo $VERSION | cut -d . -f 1)"
+  ;;
+
+esac
