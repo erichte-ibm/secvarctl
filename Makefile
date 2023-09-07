@@ -79,6 +79,7 @@ endif
 _LDFLAGS += -L./lib
 
 MAIN_SRCS = generic.c \
+            version.c \
             secvarctl.c
 
 ifeq ($(strip $(HOST_BACKEND)), 1)

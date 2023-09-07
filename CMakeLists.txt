@@ -6,7 +6,7 @@ project( secvarctl C )
 
 add_executable( secvarctl )
 
-target_sources( secvarctl PRIVATE secvarctl.c generic.c )
+target_sources( secvarctl PRIVATE secvarctl.c generic.c version.c )
 
 target_include_directories( secvarctl BEFORE PRIVATE
   ./
