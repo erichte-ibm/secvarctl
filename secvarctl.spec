@@ -23,7 +23,7 @@ variables.
 
 %prep
 %setup -q
-%cmake
+%cmake -DCMAKE_BUILD_TYPE=Release
 
 %build
 %cmake_build
