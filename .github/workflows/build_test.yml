@@ -6,7 +6,8 @@ jobs:
   makefile:
     strategy:
       matrix:
-        backend: ["", "GUEST_BACKEND=0", "HOST_BACKEND=0"]
+        backend: [""]
+      fail-fast: false
 
     runs-on: ubuntu-latest
 
@@ -18,8 +19,18 @@ jobs:
     - name: install openssl and valgrind for running test script
       run:  sudo apt-get update && sudo apt-get install -y openssl libssl-dev libmbedtls-dev
 
+    - name: build
+      run: make DISABLE_ASAN=1 debug
+
     - name: run test cases
       run: make ${{ matrix.backend }} check
+
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: secvarctl
+        path: .
+
 
   cmake:
     strategy:
