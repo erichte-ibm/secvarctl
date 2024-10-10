@@ -36,7 +36,7 @@ jobs:
           submodules: 'recursive'
 
       - name: prepare qemu
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: "${{ matrix.arch }}"
 
@@ -49,9 +49,9 @@ jobs:
         run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build ${IMAGE_NAME} bash -c "cd build && ci/build-rpm.sh"
 
       - name: upload rpms
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.arch }}
+          name: ${{ matrix.image | replace(from=":", to="_") }}-${{ matrix.arch }}
           path: rpms/*
 
   staticbuild:
@@ -67,7 +67,7 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-qemu-action@v3
         with:
           platforms: "${{ matrix.arch }}"
 
@@ -78,9 +78,9 @@ jobs:
         run: docker run -t --platform linux/${{ matrix.arch }} -v $(pwd):/build -e ARCH=${{ matrix.arch }} alpine-${{ matrix.arch }} bash -c "cd build && ci/build-static.sh"
 
       - name: upload rpms
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: static
+          name: static-${{ matrix.arch }}
           path: secvarctl.${{ matrix.arch }}
 
   release:
