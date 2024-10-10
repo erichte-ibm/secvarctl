@@ -21,15 +21,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: ["x86_64", "ppc64le"]
+        # arch: ["x86_64", "ppc64le"]
+        arch: ["x86_64"]
         image:
           - "almalinux:8"
-          - "almalinux:9"
+          # - "almalinux:9"
           - "fedora:39"
-          - "fedora:40"
-          - "fedora:rawhide"
-          - "opensuse/leap:15"
-          - "opensuse/tumbleweed:latest"
+          # - "fedora:40"
+          # - "fedora:rawhide"
+          # - "opensuse/leap:15"
+          # - "opensuse/tumbleweed:latest"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,7 +52,7 @@ jobs:
       - name: upload rpms
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.image | replace(from=":", to="_") }}-${{ matrix.arch }}
+          name: ${{ env.IMAGE_NAME }}
           path: rpms/*
 
   staticbuild:
